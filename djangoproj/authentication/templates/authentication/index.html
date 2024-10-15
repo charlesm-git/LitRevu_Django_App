@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Page d'accueil du site, proposant la connexion ou l'inscription</h1>
+<a href="{% url 'signup' %}">Inscription</a>
+<a href="{% url 'login' %}">Connexion</a>
+{% endblock %}
