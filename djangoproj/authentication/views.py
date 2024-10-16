@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View
 from authentication.forms import LoginForm, SignupForm
 
 
-class LoginView(View):
-    template_name = "authentication/login.html"
+class IndexView(View):
+    template_name = "authentication/index.html"
 
     def get(self, request):
         form = LoginForm()
@@ -20,7 +20,7 @@ class LoginView(View):
             )
             if user is not None:
                 login(request, user)
-                return redirect("home")
+                return redirect("feed")
         return render(request, self.template_name, {"form": form})
 
 
@@ -36,9 +36,11 @@ class SignupView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("home")
+            return redirect("feed")
         return render(request, self.template_name, {"form": form})
-    
-class IndexView(View):
+
+
+class LogoutView(View):
     def get(self, request):
-        return render(request, 'authentication/index.html')
+        logout(request)
+        return redirect("index")

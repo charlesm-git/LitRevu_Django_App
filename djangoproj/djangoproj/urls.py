@@ -14,15 +14,48 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 import authentication.views as authentication
 import blog.views as blog
 
 urlpatterns = [
-    path('', authentication.IndexView.as_view(), name='index'),
-    path('admin/', admin.site.urls),
-    path('login/', authentication.LoginView.as_view(), name='login'),
-    path('signup/', authentication.SignupView.as_view(), name='signup'),
-    path('home/', blog.HomeView.as_view(), name='home'), 
+    path("admin/", admin.site.urls),
+    path("", authentication.IndexView.as_view(), name="index"),
+    path("signup/", authentication.SignupView.as_view(), name="signup"),
+    path("logout/", authentication.LogoutView.as_view(), name="logout"),
+    path("feed/", blog.Feed.as_view(), name="feed"),
+    path("subscription/", blog.Subscription.as_view(), name="subscription"),
+    path("posts/", blog.Posts.as_view(), name="posts"),
+    path(
+        "ticket/create/", blog.TicketCreation.as_view(), name="create-ticket"
+    ),
+    path(
+        "ticket/<int:id>/update",
+        blog.TicketUpdate.as_view(),
+        name="update-ticket",
+    ),
+    path(
+        "ticket/<int:id>/delete",
+        blog.TicketDelete.as_view(),
+        name="delete-ticket",
+    ),
+    path(
+        "review/create_empty/",
+        blog.ReviewCreationFromScratch.as_view(),
+        name="create-review-from-scratch",
+    ),
+    path(
+        "review/create_from_ticket/<int:id>",
+        blog.ReviewCreationFromTicket.as_view(),
+        name="create-review-from-ticket",
+    ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include 'partial/navbar.html' %}
+<h1>PAGE DE POSTS</h1>
+<ul>
+    {% for ticket in tickets %}
+    <li>
+        {{ ticket.title }} - {{ ticket.description }} -
+        <a href="{% url 'update-ticket' ticket.id %}">Modifier</a> - 
+        <a href="{% url 'delete-ticket' ticket.id %}">Supprimer</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

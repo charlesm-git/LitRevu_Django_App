@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Page de création de compte</h1>
+<h1>Inscrivez-vous</h1>
 <form method="post">
     {{ form.as_p }}
     {% csrf_token %}
     <button type="submit">S'inscrire</button>
 </form>
-<p>Déjà incrit ? Cliquez <a href="{% url 'login' %}">ici</a> pour accéder à la page de connexion</p>
+<a href="{% url 'index' %}">Retour</a>
 
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include 'partial/navbar.html' %}
+<h1>PAGE DE CREATION DE TICKET</h1>
+<form method="post" enctype="multipart/form-data">
+    {{ ticket_form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Envoyer</button>
+</form>
+{% endblock %}
