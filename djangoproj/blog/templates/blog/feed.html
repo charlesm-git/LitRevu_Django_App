@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
-
+{% load custom_tags %}
 
 {% block content %}
 {% include 'partial/navbar.html' %}
-<h1>PAGE DE FEED</h1>
-<a href="{% url 'create-ticket' %}">Demander une critique</a>
-<a href="{% url 'create-review-from-scratch' %}">Créer une critique complète</a>
-
-<ul>
-    {% for ticket in tickets %}
-    <li>
-        {{ ticket.title }} - {{ ticket.description }}
-        <a href="{% url 'create-review-from-ticket' ticket.id %}">Créer une critique</a>
-    </li>
-    {% endfor %}
-</ul>
-
+<div class="container my-4">
+    <section class="col-12 col-lg-9 mx-auto">
+        <div class="d-flex justify-content-evenly mb-5">
+            <a href="{% url 'create-ticket' %}" class="btn btn-primary px-4">Demander une critique</a>
+            <a href="{% url 'create-review' %}" class="btn btn-primary px-4">Créer une critique complète</a>
+        </div>
+        {% for post in feed %}
+        <article class="container post-display">
+            {% if post|model_type == 'Ticket' %}
+            {% include 'blog/partials/ticket_snippet.html' with ticket=post %}
+            {% if not post.has_review %}
+            <div class="text-end mt-2">
+                <a href="{% url 'create-review-from-ticket' post.id %}" class="btn btn-primary">Créer une critique</a>
+            </div>
+            {% endif %}
+            {% elif post|model_type == 'Review' %}
+            {% include 'blog/partials/review_snippet.html' with review=post %}
+            {% endif %}
+        </article>
+        {% endfor %}
+    </section>
+</div>
 
 {% endblock %}

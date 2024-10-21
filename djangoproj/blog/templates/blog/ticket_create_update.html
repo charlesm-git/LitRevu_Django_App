@@ -3,10 +3,16 @@
 
 {% block content %}
 {% include 'partial/navbar.html' %}
-<h1>PAGE DE CREATION DE TICKET</h1>
-<form method="post" enctype="multipart/form-data">
-    {{ ticket_form.as_p }}
-    {% csrf_token %}
-    <button type="submit">Envoyer</button>
-</form>
+<section class="container my-4">
+    <div class="text-center mb-4">
+        {% if mode == "creation" %}
+        <h1 class="h3">Création de ticket</h1>
+        {% elif mode == "update" %}
+        <h1 class="h3">Modification de ticket</h1>
+        {% endif %}
+    </div>
+    <div class="col-12 col-lg-9 mx-auto post-display">
+        {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form %}
+    </div>
+</section>
 {% endblock %}

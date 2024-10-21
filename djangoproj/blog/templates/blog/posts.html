@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
-
+{% load custom_tags %}
 
 {% block content %}
 {% include 'partial/navbar.html' %}
-<h1>PAGE DE POSTS</h1>
-<ul>
-    {% for ticket in tickets %}
-    <li>
-        {{ ticket.title }} - {{ ticket.description }} -
-        <a href="{% url 'update-ticket' ticket.id %}">Modifier</a> - 
-        <a href="{% url 'delete-ticket' ticket.id %}">Supprimer</a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container my-4">
+    <div class="col-9 mx-auto">
+        <h1 class="text-center mb-5">Vos posts</h1>
+        {% for post in posts %}
+        <article class="container post-display">
+            {% if post|model_type == 'Ticket' %}
+            {% include 'blog/partials/ticket_snippet.html' with ticket=post %}
+            <div class="text-end mt-2">
+                <a href="{% url 'update-ticket' post.id %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'delete-ticket' post.id %}" class="btn btn-danger">Supprimer</a>
+            </div>
+            {% elif post|model_type == 'Review' %}
+            {% include 'blog/partials/review_snippet.html' with review=post %}
+            <div class="text-end mt-2">
+                <a href="{% url 'update-review' post.id %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'delete-review' post.id %}" class="btn btn-danger">Supprimer</a>
+            </div>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

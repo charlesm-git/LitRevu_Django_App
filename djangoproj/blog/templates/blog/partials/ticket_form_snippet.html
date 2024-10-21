@@ -1,0 +1,12 @@
+<form method="post" enctype="multipart/form-data">
+    <label for="title">Titre</label>
+    <p class="mb-4"> {{ ticket_form.title }} </p>
+    <label for="description">Description</label>
+    <p class="mb-4"> {{ ticket_form.description }} </p>
+    <label for="image">Image</label>
+    <p class="mb-4"> {{ ticket_form.image }} </p>
+    {% csrf_token %}
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </div>
+</form>

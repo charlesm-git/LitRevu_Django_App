@@ -3,12 +3,18 @@
 
 {% block content %}
 {% include 'partial/navbar.html' %}
+
 <section class="container my-4">
     <div class="col-12 col-lg-9 mx-auto">
-        <h1 class="h3 text-center mb-4">Création d'une critique</h1>
-        <h4 class="h4 mb-3">Livre / Article :</h4>
+        <div class="text-center mb-4">
+            {% if mode == "creation" %}
+            <h1 class="h3">Création d'une critique pour le ticket :</h1>
+            {% elif mode == "update" %}
+            <h1 class="h3">Modification de la critique du ticket : </h1>
+            {% endif %}
+        </div>
         <div class="container post-display">
-            {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form %}
+            {% include 'blog/partials/ticket_snippet.html' with ticket=ticket %}
         </div>
         <h4 class="h4 mb-3">Votre critique :</h4>
         <div class="container post-display">

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+{% include 'partial/navbar.html' %}
+<div class="container my-4">
+    <div class="col-12 col-lg-9 mx-auto">
+        {% if post|model_type == 'Ticket' %}
+        <h1 class="h2 text-center mb-3">Voulez-vous vraiment supprimer le ticket : </h1>
+        {% elif post|model_type == 'Review' %}
+        <h1 class="h2 text-center mb-3">Voulez-vous vraiment supprimer la critique : </h1>
+        <h2 class="h3 text-center mb-3">Seule la critique sera supprimée </h2>
+        {% endif %}
+        <article class="container post-display">
+            {% if post|model_type == 'Ticket' %}
+            {% include 'blog/partials/ticket_snippet.html' with ticket=post %}
+            {% elif post|model_type == 'Review' %}
+            {% include 'blog/partials/review_snippet.html' with review=post %}
+            {% endif %}
+        </article>
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-danger m-3" type="submit">Confirmer la suppression</button>
+                <a href="{% url 'posts' %}" class="btn btn-primary m-3">Retour</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

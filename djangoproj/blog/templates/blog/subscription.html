@@ -3,5 +3,43 @@
 
 {% block content %}
 {% include 'partial/navbar.html' %}
-<h1>PAGE D'ABONNEMENT</h1>
+<div class="container my-4">
+    <div class="col-9 mx-auto">
+        <h1 class="text-center mb-5">Vos abonnements</h1>
+        <div class="text-center">
+            <h2 class="mb-3">Recherche d'utilisateur</h2>
+            <form method="post" class="d-flex">
+                {% csrf_token %}
+                <div class="col">
+                    {{ subscription_form.username }}
+                </div>
+                <div class="col-auto ms-3">
+                    <button type="submit" class="btn btn-primary px-4">Envoyer</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <h2 class="text-center mt-5 mb-3">Abonnements</h2>
+            {% for follow in following %}
+            <div class="d-flex justify-content-between align-items-center border-bottom border-3 border-black p-2">
+                <div class="ms-4">
+                    {{ follow.followed_user.username }}
+                </div>
+                <a href="{% url 'unsubscribe' follow.followed_user.id %}" class="col-2 btn btn-danger">Se
+                    désabonner</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mb-5">
+            <h2 class="text-center mt-5 mb-3">Abonnés</h2>
+            {% for follower in followed_by %}
+            <div class="d-flex justify-content-start border-bottom border-3 border-black p-2">
+                <div class="ms-4">
+                    {{ follower.user.username }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

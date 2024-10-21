@@ -1,0 +1,16 @@
+.centered-input {
+    text-align: center;
+    /* Centers the text inside the input */
+}
+
+.centered-input::placeholder {
+    text-align: center;
+    /* Centers the placeholder text */
+}
+
+.post-display {
+    border: 2px solid black;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    margin-bottom: 1.25rem;
+}

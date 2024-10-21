@@ -34,24 +34,39 @@ urlpatterns = [
         "ticket/create/", blog.TicketCreation.as_view(), name="create-ticket"
     ),
     path(
-        "ticket/<int:id>/update",
+        "ticket/<int:id>/update/",
         blog.TicketUpdate.as_view(),
         name="update-ticket",
     ),
     path(
-        "ticket/<int:id>/delete",
+        "ticket/<int:id>/delete/",
         blog.TicketDelete.as_view(),
         name="delete-ticket",
     ),
     path(
-        "review/create_empty/",
-        blog.ReviewCreationFromScratch.as_view(),
-        name="create-review-from-scratch",
+        "review/create/",
+        blog.ReviewCreation.as_view(),
+        name="create-review",
     ),
     path(
-        "review/create_from_ticket/<int:id>",
-        blog.ReviewCreationFromTicket.as_view(),
+        "review/create/<int:id>/",
+        blog.ReviewCreation.as_view(),
         name="create-review-from-ticket",
+    ),
+    path(
+        "review/<int:id>/update/",
+        blog.ReviewUpdate.as_view(),
+        name="update-review",
+    ),
+    path(
+        "review/<int:id>/delete/",
+        blog.ReviewDelete.as_view(),
+        name="delete-review",
+    ),
+    path(
+        "unsubscribe/<int:id>/",
+        blog.Unsubscribe.as_view(),
+        name="unsubscribe",
     ),
 ]
 

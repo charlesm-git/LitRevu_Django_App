@@ -1,0 +1,11 @@
+{% load custom_tags %}
+
+<div class="d-flex justify-content-between">
+    <h3 class="h6 col-8">Critique par {% display_username review.user request.user %}</h3>
+    <div class="col-4 text-end"> {{ review.time_created }} </div>
+</div>
+<h4 class="h4">{{ review.headline }} - {{ review.rating|stars }}</h4>
+<p>{{ review.body }}</p>
+<div class="container post-display">
+    {% include 'blog/partials/ticket_snippet.html' with ticket=review.ticket %}
+</div>

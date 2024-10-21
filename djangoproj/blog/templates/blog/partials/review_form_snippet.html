@@ -1,0 +1,18 @@
+<form method="post" enctype="multipart/form-data">
+    <label for="headline">Titre</label>
+    <p class="mb-4"> {{ review_form.headline }} </p>
+    <label for="rating">Note</label>
+    <div class="mb-4">
+        {% for radio in review_form.rating %}
+        <div class="form-check form-check-inline">
+            {{ radio.tag }} {{ radio.choice_label}}
+        </div>
+        {% endfor %}
+    </div>
+    <label for="body">Commentaire</label>
+    <p class="mb-4"> {{ review_form.body }} </p>
+    {% csrf_token %}
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </div>
+</form>

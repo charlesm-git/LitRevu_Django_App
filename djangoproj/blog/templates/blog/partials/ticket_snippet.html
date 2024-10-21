@@ -1,0 +1,13 @@
+{% load custom_tags %}
+
+<div class="d-flex justify-content-between">
+    <h3 class="h6 col-8">Ticket par {% display_username ticket.user request.user %}</h3>
+    <div class="col-4 text-end"> {{ ticket.time_created }} </div>
+</div>
+<h4 class="h4">{{ ticket.title }}</h4>
+<p>{{ ticket.description }}</p>
+{% if ticket.image %}
+<div class="text-center">
+    <img src="{{ ticket.image.url }}" alt="">
+</div>
+{% endif %}
