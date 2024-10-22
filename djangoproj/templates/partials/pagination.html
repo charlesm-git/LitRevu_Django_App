@@ -1,0 +1,17 @@
+<div class="pagination d-flex">
+    <div class="col-4 text-start">
+        {% if page.has_previous %}
+        <a href="?page=1" class="btn btn-primary">&laquo; First</a>
+        <a href="?page={{ page.previous_page_number }}" class="btn btn-primary">Previous</a>
+        {% endif %}
+    </div>
+    <div class="col-4 text-center">
+        Page {{ page.number }} sur {{ page.paginator.num_pages }}.
+    </div>
+    <div class="col-4 text-end">
+        {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}" class="btn btn-primary">Next</a>
+        <a href="?page={{ page.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+        {% endif %}
+    </div>
+</div>

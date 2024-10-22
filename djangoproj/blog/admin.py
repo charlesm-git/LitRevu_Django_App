@@ -1,9 +1,10 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
 from .models import Ticket, Review
 
 
-class TicketAdmin(admin.ModelAdmin):
+class TicketAdmin(GuardedModelAdmin):
     # Specify fields to show in the list view
     list_display = (
         "title",

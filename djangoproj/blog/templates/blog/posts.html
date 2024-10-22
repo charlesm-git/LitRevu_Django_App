@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load custom_tags %}
 
+{% block title %}
+- Posts
+{% endblock %}
+
 {% block content %}
-{% include 'partial/navbar.html' %}
+{% include 'partials/navbar.html' %}
 <div class="container my-4">
     <div class="col-9 mx-auto">
         <h1 class="text-center mb-5">Vos posts</h1>

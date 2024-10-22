@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 {% load custom_tags %}
 
+{% block title %}
+- Feed
+{% endblock %}
+
 {% block content %}
-{% include 'partial/navbar.html' %}
+{% include 'partials/navbar.html' %}
 <div class="container my-4">
     <section class="col-12 col-lg-9 mx-auto">
         <div class="d-flex justify-content-evenly mb-5">
             <a href="{% url 'create-ticket' %}" class="btn btn-primary px-4">Demander une critique</a>
             <a href="{% url 'create-review' %}" class="btn btn-primary px-4">Créer une critique complète</a>
         </div>
-        {% for post in feed %}
+        {% for post in page %}
         <article class="container post-display">
             {% if post|model_type == 'Ticket' %}
             {% include 'blog/partials/ticket_snippet.html' with ticket=post %}
@@ -23,6 +27,7 @@
             {% endif %}
         </article>
         {% endfor %}
+        {% include 'partials/pagination.html' with page=page %}
     </section>
 </div>
 

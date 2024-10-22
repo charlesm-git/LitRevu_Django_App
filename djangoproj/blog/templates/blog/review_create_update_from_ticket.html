@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %}
+- Review
+{% endblock %}
 
 {% block content %}
-{% include 'partial/navbar.html' %}
+{% include 'partials/navbar.html' %}
 
 <section class="container my-4">
     <div class="col-12 col-lg-9 mx-auto">
@@ -18,7 +21,9 @@
         </div>
         <h4 class="h4 mb-3">Votre critique :</h4>
         <div class="container post-display">
-            {% include 'blog/partials/review_form_snippet.html' with review_form=review_form %}
+            <form method="post" enctype="multipart/form-data">
+                {% include 'blog/partials/review_form_snippet.html' with review_form=review_form %}
+            </form>
         </div>
     </div>
 </section>

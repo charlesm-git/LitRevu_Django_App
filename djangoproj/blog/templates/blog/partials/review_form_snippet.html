@@ -1,18 +1,20 @@
-<form method="post" enctype="multipart/form-data">
-    <label for="headline">Titre</label>
-    <p class="mb-4"> {{ review_form.headline }} </p>
-    <label for="rating">Note</label>
-    <div class="mb-4">
-        {% for radio in review_form.rating %}
-        <div class="form-check form-check-inline">
-            {{ radio.tag }} {{ radio.choice_label}}
-        </div>
-        {% endfor %}
+{% csrf_token %}
+<label for="headline">Titre</label>
+<p class="mb-4"> {{ review_form.headline }} </p>
+<p class="mb-4"> {{ review_form.headline.errors }} </p>
+
+<label for="rating">Note</label>
+<div class="mb-4">
+    {% for radio in review_form.rating %}
+    <div class="form-check form-check-inline">
+        {{ radio.tag }} {{ radio.choice_label}}
     </div>
-    <label for="body">Commentaire</label>
-    <p class="mb-4"> {{ review_form.body }} </p>
-    {% csrf_token %}
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-    </div>
-</form>
+    {% endfor %}
+</div>
+<p class="mb-4"> {{ review_form.rating.errors }} </p>
+
+<label for="body">Commentaire</label>
+<p class="mb-4"> {{ review_form.body }} </p>
+<div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</div>

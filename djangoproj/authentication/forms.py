@@ -7,7 +7,9 @@ class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=63,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Nom d'utilisateur", "class":"form-control"}),
+        widget=forms.TextInput(
+            attrs={"placeholder": "Nom d'utilisateur", "class": "form-control"}
+        ),
     )
     password = forms.CharField(
         max_length=63,
@@ -31,14 +33,17 @@ class SignupForm(UserCreationForm):
             "placeholder"
         ] = "Nom d'utilisateur"
         self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["username"].error_messages[
+            "unique"
+        ] = "This username is already taken."
 
         self.fields["password1"].label = ""
-        self.fields["password1"].help_text = ""
+        # self.fields["password1"].help_text = ""
         self.fields["password1"].widget.attrs["placeholder"] = "Mot de passe"
         self.fields["password1"].widget.attrs["class"] = "form-control"
 
         self.fields["password2"].label = ""
-        self.fields["password2"].help_text = ""
+        # self.fields["password2"].help_text = ""
         self.fields["password2"].widget.attrs[
             "placeholder"
         ] = "Confirmer le mot de passe"

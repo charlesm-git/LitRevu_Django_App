@@ -6,6 +6,7 @@ from authentication.forms import LoginForm, SignupForm
 
 class IndexView(View):
     template_name = "authentication/index.html"
+    message = ""
 
     def get(self, request):
         form = LoginForm()
@@ -19,9 +20,12 @@ class IndexView(View):
                 password=form.cleaned_data["password"],
             )
             if user is not None:
+                user.backend = "django.contrib.auth.backends.ModelBackend"
                 login(request, user)
                 return redirect("feed")
-        return render(request, self.template_name, {"form": form})
+            else:
+                self.message = "Incorrect username or password. Verify your information and try again."
+        return render(request, self.template_name, {"form": form, "message": self.message})
 
 
 class SignupView(View):
@@ -35,6 +39,7 @@ class SignupView(View):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.backend = "django.contrib.auth.backends.ModelBackend"
             login(request, user)
             return redirect("feed")
         return render(request, self.template_name, {"form": form})

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %}
+- Subscription
+{% endblock %}
 
 {% block content %}
-{% include 'partial/navbar.html' %}
+{% include 'partials/navbar.html' %}
 <div class="container my-4">
     <div class="col-9 mx-auto">
         <h1 class="text-center mb-5">Vos abonnements</h1>
@@ -18,6 +21,7 @@
                 </div>
             </form>
         </div>
+        <p class="text-danger mt-2">{{ message }}</p>
         <div>
             <h2 class="text-center mt-5 mb-3">Abonnements</h2>
             {% for follow in following %}

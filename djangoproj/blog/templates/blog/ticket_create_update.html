@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %}
+- Ticket
+{% endblock %}
 
 {% block content %}
-{% include 'partial/navbar.html' %}
+{% include 'partials/navbar.html' %}
 <section class="container my-4">
     <div class="text-center mb-4">
         {% if mode == "creation" %}
@@ -12,7 +15,9 @@
         {% endif %}
     </div>
     <div class="col-12 col-lg-9 mx-auto post-display">
-        {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form %}
+        <form method="post" enctype="multipart/form-data">
+            {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form submit_button=True %}
+        </form>
     </div>
 </section>
 {% endblock %}

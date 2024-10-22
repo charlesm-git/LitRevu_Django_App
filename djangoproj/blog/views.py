@@ -2,10 +2,31 @@ from itertools import chain
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Value, CharField, Q, OuterRef, Exists
+from django.db.models import Q, OuterRef, Exists
+from django.core.paginator import Paginator
+from guardian.shortcuts import assign_perm
+from guardian.mixins import PermissionRequiredMixin
 from blog.forms import TicketForm, ReviewForm, UsernameForm
 from blog.models import Ticket, Review, UserFollows
 from authentication.models import User
+
+
+def save_ticket(request, ticket_form):
+    ticket = ticket_form.save(commit=False)
+    ticket.user = request.user
+    ticket.save()
+    assign_perm("blog.change_ticket", request.user, ticket)
+    assign_perm("blog.delete_ticket", request.user, ticket)
+    return ticket
+
+
+def save_review(request, review_form, ticket):
+    review = review_form.save(commit=False)
+    review.user = request.user
+    review.ticket = ticket
+    review.save()
+    assign_perm("blog.change_review", request.user, review)
+    assign_perm("blog.delete_review", request.user, review)
 
 
 class Feed(LoginRequiredMixin, View):
@@ -21,7 +42,9 @@ class Feed(LoginRequiredMixin, View):
         tickets = tickets.annotate(has_review=Exists(review_exist))
 
         reviews = Review.objects.filter(
-            Q(user=request.user) | Q(user__in=followed_users)
+            Q(user=request.user)
+            | Q(user__in=followed_users)
+            | Q(ticket__user=request.user)
         )
 
         feed = sorted(
@@ -29,7 +52,12 @@ class Feed(LoginRequiredMixin, View):
             key=lambda instance: instance.time_created,
             reverse=True,
         )
-        return render(request, "blog/feed.html", {"feed": feed})
+        
+        paginator = Paginator(feed, 5)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)
+        
+        return render(request, "blog/feed.html", {"page": page})
 
 
 class Posts(LoginRequiredMixin, View):
@@ -63,9 +91,7 @@ class TicketCreation(LoginRequiredMixin, View):
     def post(self, request):
         ticket_form = TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
-            ticket = ticket_form.save(commit=False)
-            ticket.user = request.user
-            ticket.save()
+            save_ticket(request, ticket_form)
             return redirect("feed")
         return render(
             request,
@@ -74,9 +100,14 @@ class TicketCreation(LoginRequiredMixin, View):
         )
 
 
-class TicketUpdate(LoginRequiredMixin, View):
+class TicketUpdate(LoginRequiredMixin, PermissionRequiredMixin, View):
     template_name = "blog/ticket_create_update.html"
     mode = "update"
+    permission_required = 'blog.change_ticket'
+    raise_exception = True
+
+    def get_permission_object(self):
+        return get_object_or_404(Ticket, id=self.kwargs.get("id"))
 
     # In both method, id is the id of the ticket to update
     def get(self, request, id):
@@ -101,8 +132,13 @@ class TicketUpdate(LoginRequiredMixin, View):
         )
 
 
-class TicketDelete(LoginRequiredMixin, View):
+class TicketDelete(LoginRequiredMixin, PermissionRequiredMixin, View):
     template_name = "blog/post_delete.html"
+    permission_required = "blog.delete_ticket"
+    raise_exception = True
+
+    def get_permission_object(self):
+        return get_object_or_404(Ticket, id=self.kwargs.get("id"))
 
     # In both method, id is the id of the ticket to delete
     def get(self, request, id):
@@ -152,10 +188,8 @@ class ReviewCreation(LoginRequiredMixin, View):
                 "mode": self.mode,
             }
             if all([ticket_form.is_valid(), self.review_form.is_valid()]):
-                ticket = ticket_form.save(commit=False)
-                ticket.user = request.user
-                ticket.save()
-                self.reviewSave(request, ticket, self.review_form)
+                ticket = save_ticket(request, ticket_form)
+                save_review(request, self.review_form, ticket)
                 return redirect("feed")
             return render(
                 request, "blog/review_create_from_scratch.html", context
@@ -168,21 +202,20 @@ class ReviewCreation(LoginRequiredMixin, View):
                 "mode": self.mode,
             }
             if self.review_form.is_valid():
-                self.reviewSave(request, ticket, self.review_form)
+                save_review(request, self.review_form, ticket)
                 return redirect("feed")
             return render(
                 request, "blog/review_create_update_from_ticket.html", context
             )
 
-    def reviewSave(self, request, ticket, review_form):
-        review = review_form.save(commit=False)
-        review.user = request.user
-        review.ticket = ticket
-        review.save()
-
 
 class ReviewUpdate(LoginRequiredMixin, View):
     mode = "update"
+    permission_required = "blog.change_review"
+    raise_exception = True
+
+    def get_permission_object(self):
+        return get_object_or_404(Review, id=self.kwargs.get("id"))
 
     # In both method, id is the id of the review to update
     def get(self, request, id):
@@ -210,12 +243,19 @@ class ReviewUpdate(LoginRequiredMixin, View):
         if review_form.is_valid():
             review_form.save()
             return redirect("posts")
+
         return render(
             request, "blog/review_create_update_from_ticket.html", context
         )
 
 
 class ReviewDelete(LoginRequiredMixin, View):
+    permission_required = "blog.delete_review"
+    raise_exception = True
+
+    def get_permission_object(self):
+        return get_object_or_404(Review, id=self.kwargs.get("id"))
+
     # In both method, id is the id of the review to delete
     def get(self, request, id):
         review = Review.objects.get(id=id)
@@ -229,6 +269,7 @@ class ReviewDelete(LoginRequiredMixin, View):
 
 class Subscription(LoginRequiredMixin, View):
     username = ""
+    message = ""
 
     def get(self, request):
         form = UsernameForm()
@@ -246,6 +287,7 @@ class Subscription(LoginRequiredMixin, View):
         return render(request, "blog/subscription.html", context)
 
     def post(self, request):
+        
         form = UsernameForm(request.POST)
         if form.is_valid():
             self.username = form.cleaned_data["username"]
@@ -262,6 +304,8 @@ class Subscription(LoginRequiredMixin, View):
                         user=request.user, followed_user=followed_user
                     )
                     user_follows.save()
+            else:
+                self.message = f"{self.username} doesn't exist in the database."
         form = UsernameForm()
         following = request.user.following.all().order_by(
             "followed_user__username"
@@ -271,6 +315,7 @@ class Subscription(LoginRequiredMixin, View):
             "subscription_form": form,
             "following": following,
             "followed_by": followed_by,
+            "message": self.message
         }
         return render(request, "blog/subscription.html", context)
 
