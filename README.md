@@ -15,10 +15,11 @@ Cette commande lance le serveur local nécessaire au fonctionnement de l'applica
 
 ### Utilisation de l'application
 
-Vous pouvez désormais vous rendre à l'addresse http://127.0.0.1:8000/ sur votre navigateur
+Vous pouvez désormais vous rendre à l'addresse http://127.0.0.1:8000/ sur votre navigateur.
 Vous tombez sur la page d'accueil du site.
 
-Des comptes de test ont été créé, vous pouvez vous-y connecter pour découvrir et manipuler l'application
+
+Des comptes de test ont été créés, vous pouvez vous-y connecter pour découvrir et manipuler l'application.
 
 Username :
 * Charles
@@ -26,3 +27,9 @@ Username :
 * Kylian
 
 Le mot de passe est `123456789` pour les trois utilisateurs.
+
+### Compte admin
+
+Pour accéder au compte admin, les identifiants sont :
+* Username : admin
+* Mot de passe : admin
