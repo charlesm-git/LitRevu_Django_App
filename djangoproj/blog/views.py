@@ -52,11 +52,11 @@ class Feed(LoginRequiredMixin, View):
             key=lambda instance: instance.time_created,
             reverse=True,
         )
-        
+
         paginator = Paginator(feed, 5)
-        page_number = request.GET.get('page')
+        page_number = request.GET.get("page")
         page = paginator.get_page(page_number)
-        
+
         return render(request, "blog/feed.html", {"page": page})
 
 
@@ -103,7 +103,7 @@ class TicketCreation(LoginRequiredMixin, View):
 class TicketUpdate(LoginRequiredMixin, PermissionRequiredMixin, View):
     template_name = "blog/ticket_create_update.html"
     mode = "update"
-    permission_required = 'blog.change_ticket'
+    permission_required = "blog.change_ticket"
     raise_exception = True
 
     def get_permission_object(self):
@@ -155,7 +155,8 @@ class ReviewCreation(LoginRequiredMixin, View):
     review_form = ReviewForm()
     mode = "creation"
 
-    # In both method, id is the id of the ticket for which the review is created
+    # In both method, id is the id of the ticket for which the review is
+    # created
     def get(self, request, id=None):
         if id is None:  # Creation from scratch
             ticket_form = TicketForm()
@@ -276,9 +277,7 @@ class Subscription(LoginRequiredMixin, View):
         following = request.user.following.all().order_by(
             "followed_user__username"
         )
-        # following = User.objects.filter(followed_by__user=request.user).order_by('username')
         followed_by = request.user.followed_by.all().order_by("user__username")
-        # followed_by = User.objects.filter(following__followed_user=request.user).order_by('username')
         context = {
             "subscription_form": form,
             "following": following,
@@ -287,7 +286,7 @@ class Subscription(LoginRequiredMixin, View):
         return render(request, "blog/subscription.html", context)
 
     def post(self, request):
-        
+
         form = UsernameForm(request.POST)
         if form.is_valid():
             self.username = form.cleaned_data["username"]
@@ -305,7 +304,9 @@ class Subscription(LoginRequiredMixin, View):
                     )
                     user_follows.save()
             else:
-                self.message = f"{self.username} doesn't exist in the database."
+                self.message = (
+                    f"{self.username} doesn't exist in the database."
+                )
         form = UsernameForm()
         following = request.user.following.all().order_by(
             "followed_user__username"
@@ -315,7 +316,7 @@ class Subscription(LoginRequiredMixin, View):
             "subscription_form": form,
             "following": following,
             "followed_by": followed_by,
-            "message": self.message
+            "message": self.message,
         }
         return render(request, "blog/subscription.html", context)
 

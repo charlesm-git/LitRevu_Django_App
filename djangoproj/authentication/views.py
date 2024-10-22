@@ -24,8 +24,15 @@ class IndexView(View):
                 login(request, user)
                 return redirect("feed")
             else:
-                self.message = "Incorrect username or password. Verify your information and try again."
-        return render(request, self.template_name, {"form": form, "message": self.message})
+                self.message = (
+                    "Incorrect username or password. "
+                    "Verify your information and try again."
+                )
+        return render(
+            request,
+            self.template_name,
+            {"form": form, "message": self.message},
+        )
 
 
 class SignupView(View):

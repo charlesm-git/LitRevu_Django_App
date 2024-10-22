@@ -14,7 +14,8 @@ class TicketAdmin(GuardedModelAdmin):
     # search_fields = ("name",)  # Add search functionality
     # list_filter = ("price",)  # Add filter options
     # ordering = ("name",)  # Set default ordering
-    
+
+
 class ReviewAdmin(admin.ModelAdmin):
     # Specify fields to show in the list view
     list_display = (
