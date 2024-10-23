@@ -7,17 +7,19 @@
 {% block content %}
 {% include 'partials/navbar.html' %}
 <section class="container my-4">
-    <div class="text-center mb-4">
-        {% if mode == "creation" %}
-        <h1 class="h3">Création de ticket</h1>
-        {% elif mode == "update" %}
-        <h1 class="h3">Modification de ticket</h1>
-        {% endif %}
-    </div>
-    <div class="col-12 col-lg-9 mx-auto post-display">
-        <form method="post" enctype="multipart/form-data">
-            {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form submit_button=True %}
-        </form>
+    <div class="col-12 col-lg-9 mx-auto">
+        <div class="text-center mb-4">
+            {% if mode == "creation" %}
+            <h1 class="h3">Création de ticket</h1>
+            {% elif mode == "update" %}
+            <h1 class="h3">Modification de ticket</h1>
+            {% endif %}
+        </div>
+        <div class="post-display">
+            <form method="post" enctype="multipart/form-data">
+                {% include 'blog/partials/ticket_form_snippet.html' with ticket_form=ticket_form submit_button=True %}
+            </form>
+        </div>
     </div>
 </section>
 {% endblock %}

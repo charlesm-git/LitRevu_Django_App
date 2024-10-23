@@ -7,7 +7,7 @@
 {% block content %}
 {% include 'partials/navbar.html' %}
 <div class="container my-4">
-    <div class="col-9 mx-auto">
+    <div class="col-12 col-lg-9 mx-auto">
         <h1 class="text-center mb-5">Vos abonnements</h1>
         <div class="text-center">
             <h2 class="mb-3">Recherche d'utilisateur</h2>
@@ -29,7 +29,7 @@
                 <div class="ms-4">
                     {{ follow.followed_user.username }}
                 </div>
-                <a href="{% url 'unsubscribe' follow.followed_user.id %}" class="col-2 btn btn-danger">Se
+                <a href="{% url 'unsubscribe' follow.followed_user.id %}" class="col-3 btn btn-danger">Se
                     désabonner</a>
             </div>
             {% endfor %}
