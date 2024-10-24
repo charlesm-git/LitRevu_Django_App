@@ -1,10 +1,10 @@
 {% csrf_token %}
-<label for="title">Titre</label>
+<label for="id_title">{{ ticket_form.titre.label }}</label>
 <p class="mb-4"> {{ ticket_form.title }} </p>
 <p class="mb-4"> {{ ticket_form.title.errors }} </p>
-<label for="description">Description</label>
+<label for="id_description">{{ ticket_form.description.label }}</label>
 <p class="mb-4"> {{ ticket_form.description }} </p>
-<label for="image">Image</label>
+<label for="id_image">{{ ticket_form.image.label }}</label>
 <p class="mb-4"> {{ ticket_form.image }} </p>
 {% if submit_button %}
 <div class="d-flex justify-content-end">

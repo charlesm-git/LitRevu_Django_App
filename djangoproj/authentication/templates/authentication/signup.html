@@ -17,14 +17,18 @@
             <form method="post" class="w-100">
                 {% csrf_token %}
                 <div class="mb-3">
+                    <label for="id_username" class="">Nom d'utilisateur</label>
                     {{ form.username }}
                     <p class="">{{ form.username.errors }}</p>
                 </div>
                 <div class="mb-3">
+                    <label for="id_password1">{{ form.password1.label }}</label>
                     {{ form.password1 }}
                     <p class="">{{ form.password1.errors }}</p>
+                    <span id="id_password1_helptext">{{ form.password1.help_text }}</span>
                 </div>
                 <div class="mb-3">
+                    <label for="id_password2" class="">Confirmer le mot de passe</label>
                     {{ form.password2 }}
                     <p class="">{{ form.password2.errors }}</p>
                 </div>

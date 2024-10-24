@@ -8,6 +8,6 @@
 <p>{{ ticket.description }}</p>
 {% if ticket.image %}
 <div class="text-center">
-    <img src="{{ ticket.image.url }}" alt="">
+    <img src="{{ ticket.image.url }}" alt="Image de couverture pour {{ ticket.title }}">
 </div>
 {% endif %}
