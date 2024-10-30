@@ -11,9 +11,6 @@ class TicketAdmin(GuardedModelAdmin):
         "user",
         "time_created",
     )
-    # search_fields = ("name",)  # Add search functionality
-    # list_filter = ("price",)  # Add filter options
-    # ordering = ("name",)  # Set default ordering
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -24,9 +21,6 @@ class ReviewAdmin(admin.ModelAdmin):
         "user",
         "time_created",
     )
-    # search_fields = ("name",)  # Add search functionality
-    # list_filter = ("price",)  # Add filter options
-    # ordering = ("name",)  # Set default ordering
 
 
 admin.site.register(Ticket, TicketAdmin)
